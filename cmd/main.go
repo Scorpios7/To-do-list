@@ -6,6 +6,7 @@ import (
 	database "github.com/Scorpios7/To-do-list/internal"
 	"github.com/Scorpios7/To-do-list/internal/api/routes"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/spf13/viper"
 )
 
@@ -21,6 +22,14 @@ func main() {
 		log.Fatalf("Fail to read config: %v", err)
 	}
 	app := fiber.New()
+
+	// 配置 CORS 中间件
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173", // 允许所有来源，生产环境建议设置具体域名
+		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+	}))
+
 	if err := database.InitDatabase(); err != nil {
 		log.Fatalf("fail to init database: %v", err)
 	}
