@@ -25,7 +25,7 @@ func main() {
 
 	// 配置 CORS 中间件
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:5173", // 允许所有来源，生产环境建议设置具体域名
+		AllowOrigins: viper.GetString("FRONT_END_URL"), // 允许来源，生产环境建议设置具体域名
 		AllowHeaders: "Origin, Content-Type, Accept",
 		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
 	}))
