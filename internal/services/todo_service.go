@@ -36,14 +36,18 @@ func GetTodoById(id int) (*models.Todo, error) {
 
 func UpdateTodo(todo models.Todo) error {
 	db := database.GetDB()
-	var existTodo models.Todo
-	if err := db.First(&existTodo, todo.Id).Error; err != nil {
+	var savaTarget models.Todo
+	if err := db.First(&savaTarget, todo.Id).Error; err != nil {
 		return err
 	}
-	if existTodo.Id == 0 {
+	if savaTarget.Id == 0 {
 		return fmt.Errorf("todo not exist")
 	}
-	if err := db.Save(&todo).Error; err != nil {
+	if todo.Body != "" {
+		savaTarget.Body = todo.Body
+	}
+	savaTarget.Completed = todo.Completed
+	if err := db.Save(&savaTarget).Error; err != nil {
 		return err
 	}
 	return nil
